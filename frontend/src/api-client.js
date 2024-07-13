@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.REACT_APP_API_KEY;
+const API_BASE_URL = process.env.REACT_APP_API_KEY || "";
 
 const register = async (formData) => {
     try {

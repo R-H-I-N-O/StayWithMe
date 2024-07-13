@@ -37,3 +37,4 @@ yarn-error.log*
 .vscode
 dist
 node_modules
+build

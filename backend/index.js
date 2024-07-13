@@ -4,6 +4,7 @@ const db = require("./config/mongoose");
 const router = require("./routes/index")
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const path = require('path')
 
 const app = express();
 
@@ -14,6 +15,8 @@ app.use(cors({
     origin: process.env.FRONTEND_URL,
     credentials: true
 }));
+
+app.use(express.static(path.join(__dirname, "../frontend/build")));
 
 app.use("/", router);
 
