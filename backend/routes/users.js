@@ -1,8 +1,10 @@
 const express = require('express');
-const {check} = require('express-validator')
+const {check, body} = require('express-validator')
 const {handleUserRegisteration} = require("../controllers/registrationController"); 
 const { handleUserLogin } = require('../controllers/loginController');
-const {validateUser} = require("../middlewares/auth")
+const {validateUser} = require("../middlewares/auth");
+const multerUpload = require('../config/multer');
+const handleAddHotel = require('../controllers/addHotelController');
 
 const router = express.Router();
 
@@ -28,5 +30,15 @@ router.post("/logout", (req,res)=>{
     });
     res.status(200).send();
 });
+
+router.post("/add-hotel", validateUser, [
+    body("name").notEmpty().withMessage("Name is required"),
+    body("city").notEmpty().withMessage("city is required"),
+    body("country").notEmpty().withMessage("country is required"),
+    body("description").notEmpty().withMessage("description is required"),
+    body("type").notEmpty().withMessage("type is required"),
+    body("pricePerNight").notEmpty().isNumeric().withMessage("Price per night is required and must be a number"),
+    body("facilities").notEmpty().isArray().withMessage("facilities is required")
+], multerUpload.array("imageFiles", 6), handleAddHotel);
 
 module.exports = router;

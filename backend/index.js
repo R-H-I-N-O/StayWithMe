@@ -5,6 +5,7 @@ const router = require("./routes/index")
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const path = require('path')
+const cloudinary = require("./config/cloudinary");
 
 const app = express();
 
