@@ -29,7 +29,7 @@ const handleUserLogin = async (req, res) => {
         res.cookie("auth_token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            maxAge: 10 * 60 * 60 * 10
+            maxAge: 10 * 60 * 60 * 1000
         });
         return res.status(200).json({ userId: user._id });
     } catch (error) {

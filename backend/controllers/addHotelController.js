@@ -4,7 +4,7 @@ const Hotels = require('../models/hotelSchema');
 const handleAddHotel = async (req, res) => {
     try {
         const newHotel = req.body;
-        const imageFiles = req.file;
+        const imageFiles = req.files;
 
         const uploadPromises = imageFiles.map(async (image)=>{
             const b64 = Buffer.from(image.buffer).toString("base64");
