@@ -16,7 +16,7 @@ const ManageHotelForm = ({onSave, isLoading})=>{
         formData.append("name", formDataJson.name);
         formData.append("city", formDataJson.city);
         formData.append("country", formDataJson.country);
-        formData.append("description", formDataJson.description);
+        formData.append("description", formDataJson.hotelDescription);
         formData.append("type", formDataJson.type);
         formData.append("pricePerNight", formDataJson.pricePerNight.toString());
         formData.append("starRating", formDataJson.starRating.toString());
