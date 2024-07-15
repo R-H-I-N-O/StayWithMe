@@ -27,7 +27,7 @@ test("should allow users to add hotels", async ({page})=>{
     await page.locator("[name=pricePerNight]").fill("123456");
     await page.selectOption("select[name='starRating']", "3");
 
-    await page.getByText("Luxury").click();
+    await page.getByText("Business").click();
 
     await page.getByLabel("Free Wifi").check();
     await page.getByLabel("Parking").check();
@@ -43,4 +43,21 @@ test("should allow users to add hotels", async ({page})=>{
     await page.getByRole("button", {name: "Save"}).click();
 
     await expect(page.getByText("Hotel added successfully")).toBeVisible();
+});
+
+test("should allow users to view added hotel", async ({page})=>{
+    await page.goto(`${CLIENT_URL}my-hotels`);
+
+    await expect(page.getByRole("heading", {name: "My Hotels"})).toBeVisible();
+    await expect(page.getByRole("link", {name: "Add Hotel"})).toBeVisible();
+
+    await expect(page.getByText("Crowne Plaza")).toBeVisible();
+    await expect(page.getByText("Lorem ipsum dolor")).toBeVisible();
+    await expect(page.getByText("Kochi, India")).toBeVisible();
+    await expect(page.getByText("Luxury")).toBeVisible();
+    await expect(page.getByText("15000 per night")).toBeVisible();
+    await expect(page.getByText("2 Adults, 2 Children")).toBeVisible();
+    await expect(page.getByText("5 star rating")).toBeVisible();
+
+    await expect(page.getByRole("link", {name: "Edit Hotel"})).toBeVisible();
 })
