@@ -106,4 +106,29 @@ const fetchMyHotels = async ()=>{
     return response.json();
 }
 
-export { register, validateToken, signIn, signOut, addMyHotel, fetchMyHotels };
+const fetchMyHotelById = async (hotelId)=>{
+    const response = await fetch(`${API_BASE_URL}/api/users/my-hotels/${hotelId}`,{
+        credentials:"include"
+    });
+
+    if (!response.ok) {
+        throw new Error("Error in fetching hotel details");
+    }
+    return response.json();
+}
+
+const UpdateMyHotelById = async (hotelFormData) => {
+    const response = await fetch(`${API_BASE_URL}/api/users/my-hotels/${hotelFormData.get("hotelId")}`, {
+        method: "PUT",
+        credentials: "include",
+        body: hotelFormData,
+    });
+
+    if(!response.ok){
+        throw new Error("Error in editing hotel details");
+    }
+    
+    return response.json();
+}
+
+export { register, validateToken, signIn, signOut, addMyHotel, fetchMyHotels, fetchMyHotelById, UpdateMyHotelById };

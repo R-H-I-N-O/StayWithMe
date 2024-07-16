@@ -23,9 +23,10 @@ test("should allow users to add hotels", async ({page})=>{
     await page.locator("[name=name]").fill("test");
     await page.locator("[name=city]").fill("test-city");
     await page.locator("[name=country]").fill("test-country");
-    await page.locator("[name='hotelDescription']").fill("This is a description for testting purpose");
+    await page.getByLabel("Description").fill("This is a description for testting purpose");
     await page.locator("[name=pricePerNight]").fill("123456");
     await page.selectOption("select[name='starRating']", "3");
+    await
 
     await page.getByText("Business").click();
 
@@ -59,5 +60,27 @@ test("should allow users to view added hotel", async ({page})=>{
     await expect(page.getByText("2 Adults, 2 Children")).toBeVisible();
     await expect(page.getByText("5 star rating")).toBeVisible();
 
-    await expect(page.getByRole("link", {name: "Edit Hotel"})).toBeVisible();
-})
+    await expect(page.getByRole("link", {name: "Edit Hotel"}).first()).toBeVisible();
+});
+
+test("should allow users to edit hotel details", async ({page})=>{
+    await page.goto(`${CLIENT_URL}my-hotels`);
+
+    await page.getByRole("link", {name: "Edit Hotel"}).first().click();
+
+    await page.waitForSelector("[name = 'name']", {state: "attached"});
+
+    await expect(page.locator('[name = "name"]')).toHaveValue("Crowne Plaza");
+    await page.locator('[name = "name"]').fill("Crowne Plaza updated");
+
+    await page.getByRole("button", {name: "Save"}).click();
+
+    await expect(page.getByText("Successfully updated hotel details")).toBeVisible();
+
+    await page.reload();
+    await page.waitForSelector("[name = 'name']", {state: "attached"});
+
+    await page.locator('[name = "name"]').fill("Crowne Plaza");
+
+    await page.getByRole("button", {name: "Save"}).click();
+});

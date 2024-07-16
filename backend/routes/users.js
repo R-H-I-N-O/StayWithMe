@@ -4,7 +4,7 @@ const {handleUserRegisteration} = require("../controllers/registrationController
 const { handleUserLogin } = require('../controllers/loginController');
 const {validateUser} = require("../middlewares/auth");
 const multerUpload = require('../config/multer');
-const handleAddHotel = require('../controllers/addHotelController');
+const {handleAddHotel, handleGetHotelById, handleEditHotel, handleGetMyHotels} = require('../controllers/manageHotelController');
 const Hotels = require('../models/hotelSchema');
 
 const router = express.Router();
@@ -42,15 +42,10 @@ router.post("/add-hotel", validateUser, [
     body("facilities").notEmpty().isArray().withMessage("facilities is required")
 ], multerUpload.array("imageFiles", 6), handleAddHotel);
 
-router.get("/my-hotels", validateUser, async (req,res)=>{
-    try {
-        const hotels = await Hotels.find({userId: req.userId});
-        return res.status(200).json(hotels);
-    } catch (error) {
-        console.error("Error in fetching hotels", error);
-        return res.status(500).json({message: "Error in fetching hotels"});
-    }
+router.get("/my-hotels", validateUser, handleGetMyHotels);
 
-});
+router.get("/my-hotels/:id",validateUser , handleGetHotelById);
+
+router.put("/my-hotels/:id", validateUser,multerUpload.array("imageFiles") ,handleEditHotel);
 
 module.exports = router;
