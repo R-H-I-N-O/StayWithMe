@@ -7,15 +7,18 @@ import { useAppContext } from './contexts/AppContext';
 import MyHotels from './pages/MyHotels';
 import EditHotel from './pages/EditHotel';
 import Search from './pages/Search';
+import Details from './pages/Details';
 
 function App() {
   const { isLoggedIn } = useAppContext();
+
   const routes = createRoutesFromElements(
     <>
       <Route path='/' element={<Layout>HomePage</Layout>}></Route>
       <Route path='/registration' element={<Layout><Registration /></Layout>}></Route>
       <Route path='/sign-in' element={<Layout><SignIn /></Layout>}></Route>
       <Route path='/search' element={<Layout><Search /></Layout>}></Route>
+      <Route path='/details/:hotelId' element={<Layout><Details /></Layout>}></Route>
 
       {isLoggedIn && (<><Route path='/add-hotel' element={<Layout><AddHotel /></Layout>}></Route>
         <Route path='/my-hotels' element={<Layout><MyHotels /></Layout>}></Route>

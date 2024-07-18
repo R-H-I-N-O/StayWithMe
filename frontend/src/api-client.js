@@ -18,7 +18,7 @@ const register = async (formData) => {
         }
         return responseBody;
     } catch (error) {
-        console.error("Error in registering user",error);
+        console.error("Error in registering user", error);
         throw error;
     }
 }
@@ -39,7 +39,7 @@ const signIn = async (formData) => {
         }
         return responseBody;
     } catch (error) {
-        console.error("Error in sign in",error);
+        console.error("Error in sign in", error);
         throw error;
     }
 }
@@ -76,12 +76,12 @@ const signOut = async () => {
             throw new Error("Error in signing out");
         }
     } catch (error) {
-        console.error("Error in logging out",error);
+        console.error("Error in logging out", error);
         throw error;
     }
 }
 
-const addMyHotel = async (hotelFormData)=>{
+const addMyHotel = async (hotelFormData) => {
     const response = await fetch(`${API_BASE_URL}/api/users/add-hotel`, {
         method: "POST",
         credentials: "include",
@@ -95,7 +95,7 @@ const addMyHotel = async (hotelFormData)=>{
     return response.json();
 }
 
-const fetchMyHotels = async ()=>{
+const fetchMyHotels = async () => {
     const response = await fetch(`${API_BASE_URL}/api/users/my-hotels`, {
         credentials: "include"
     });
@@ -106,9 +106,9 @@ const fetchMyHotels = async ()=>{
     return response.json();
 }
 
-const fetchMyHotelById = async (hotelId)=>{
-    const response = await fetch(`${API_BASE_URL}/api/users/my-hotels/${hotelId}`,{
-        credentials:"include"
+const fetchMyHotelById = async (hotelId) => {
+    const response = await fetch(`${API_BASE_URL}/api/users/my-hotels/${hotelId}`, {
+        credentials: "include"
     });
 
     if (!response.ok) {
@@ -124,14 +124,14 @@ const UpdateMyHotelById = async (hotelFormData) => {
         body: hotelFormData,
     });
 
-    if(!response.ok){
+    if (!response.ok) {
         throw new Error("Error in editing hotel details");
     }
-    
+
     return response.json();
 }
 
-const searchHotels = async (searchParams)=>{
+const searchHotels = async (searchParams) => {
     const queryParams = new URLSearchParams();
 
     queryParams.append("destination", searchParams.destination || "");
@@ -156,11 +156,24 @@ const searchHotels = async (searchParams)=>{
 
     const response = await fetch(`${API_BASE_URL}/api/hotels/search?${queryParams}`);
 
-    if(!response.ok){
+    if (!response.ok) {
         throw new Error("Error in fetching hotels");
     }
 
     return response.json();
 }
 
-export { register, validateToken, signIn, signOut, addMyHotel, fetchMyHotels, fetchMyHotelById, UpdateMyHotelById, searchHotels };
+const fetchHotelbyId = async (hotelId) => {
+    const response = await fetch(`${API_BASE_URL}/api/hotels/search/${hotelId}`);
+
+    if (!response.ok) {
+        throw new Error("Error in fetching hotel data");
+    }
+
+    return response.json();
+}
+
+export {
+    register, validateToken, signIn, signOut, addMyHotel, fetchMyHotels,
+    fetchMyHotelById, UpdateMyHotelById, searchHotels, fetchHotelbyId
+};

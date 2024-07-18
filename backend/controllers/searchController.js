@@ -1,4 +1,5 @@
 const Hotels = require("../models/hotelSchema");
+const {validationResult} = require('express-validator');
 
 const handleSearch = async (req, res) => {
     try {
@@ -41,6 +42,24 @@ const handleSearch = async (req, res) => {
     } catch (error) {
         console.error("error in fetching hotels", error);
         return res.status(500).json({ message: "Error in fetching hotels" });
+    }
+}
+
+const handleHotelViewPage = async (req,res)=>{
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(400).json({ errors: errors.array()});
+    }
+
+    try {
+        const id = req.params.id;
+
+        const hotel = await Hotels.findById(id);
+
+        return res.status(200).json(hotel);
+    } catch (error) {
+        console.error("Error in fetching hotel data", error)
+        return res.status(500).json({ message: "Error in fetching hotel data" });
     }
 }
 
@@ -98,4 +117,4 @@ const constructSearchQuery = (queryParams) => {
     return constructedQuery;
 }
 
-module.exports = { handleSearch };
+module.exports = { handleSearch, handleHotelViewPage };

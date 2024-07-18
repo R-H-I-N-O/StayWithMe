@@ -13,7 +13,7 @@ const Layout = (props) => {
             <div className="container mx-auto">
                 <SearchBar />
             </div>
-            <div className="container mx-auto py-10 flex-1">{props.children}</div>
+            <div className="container mx-auto py-10 flex-1 ">{props.children}</div>
             <Footer />
         </div>
     )
