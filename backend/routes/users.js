@@ -6,6 +6,7 @@ const {validateUser} = require("../middlewares/auth");
 const multerUpload = require('../config/multer');
 const {handleAddHotel, handleGetHotelById, handleEditHotel, handleGetMyHotels} = require('../controllers/manageHotelController');
 const Hotels = require('../models/hotelSchema');
+const {handleFetchUserForBooking, handlePaymentIntentCreation, handleBookingPayment} = require("../controllers/bookingController")
 
 const router = express.Router();
 
@@ -47,5 +48,10 @@ router.get("/my-hotels", validateUser, handleGetMyHotels);
 router.get("/my-hotels/:id",validateUser , handleGetHotelById);
 
 router.put("/my-hotels/:id", validateUser,multerUpload.array("imageFiles") ,handleEditHotel);
+
+router.get("/me", validateUser, handleFetchUserForBooking);
+
+router.post("/:hotelId/bookings/payment-intent", validateUser, handlePaymentIntentCreation);
+router.post("/:hotelId/bookings", validateUser, handleBookingPayment);
 
 module.exports = router;

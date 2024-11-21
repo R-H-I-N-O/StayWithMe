@@ -52,9 +52,9 @@ const handleHotelViewPage = async (req,res)=>{
     }
 
     try {
-        const id = req.params.id;
+        const hotelId = req.params.id.toString();
 
-        const hotel = await Hotels.findById(id);
+        const hotel = await Hotels.findById(hotelId);
 
         return res.status(200).json(hotel);
     } catch (error) {

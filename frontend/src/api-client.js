@@ -163,7 +163,7 @@ const searchHotels = async (searchParams) => {
     return response.json();
 }
 
-const fetchHotelbyId = async (hotelId) => {
+const fetchHotelbyIdForDetails = async (hotelId) => {
     const response = await fetch(`${API_BASE_URL}/api/hotels/search/${hotelId}`);
 
     if (!response.ok) {
@@ -173,7 +173,41 @@ const fetchHotelbyId = async (hotelId) => {
     return response.json();
 }
 
+const fetchCurrentUser = async ()=>{
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/users/me`, {
+            credentials: "include"
+        });
+    
+        if (!response.ok) {
+            throw new Error("Error in fetching user data");
+        }
+    
+        return response.json();
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const createPaymentIntent = async (hotelId, numberOfNights)=>{
+    const response = await fetch(`${API_BASE_URL}/api/users/${hotelId}/bookings/payment-intent`,{
+        credentials: "include",
+        method: "POST",
+        body: JSON.stringify({numberOfNights}),
+        headers: {
+            "Content-Type" : "application/json"
+        }
+    });
+    
+    if (!response.ok) {
+        throw new Error("Error in fetching user data");
+    }
+
+    return response.json();
+}
+
 export {
     register, validateToken, signIn, signOut, addMyHotel, fetchMyHotels,
-    fetchMyHotelById, UpdateMyHotelById, searchHotels, fetchHotelbyId
+    fetchMyHotelById, UpdateMyHotelById, searchHotels, fetchHotelbyIdForDetails,
+    fetchCurrentUser, createPaymentIntent
 };

@@ -3,12 +3,12 @@ import {createContext, useContext, useState} from 'react'
 const SearchContext = createContext();
 
 const SearchContextProvider = ({children})=>{
-    const [destination, setDestination] = useState("");
-    const [checkIn, setCheckIn] = useState(new Date());
-    const [checkOut, setCheckOut] = useState(new Date());
-    const [adultCount, setAdultCount] = useState(1);
-    const [childCount, setChildCount] = useState(0);
-    const [hotelId, setHotelId] = useState("");
+    const [destination, setDestination] = useState(()=> sessionStorage.getItem("destination") || "");
+    const [checkIn, setCheckIn] = useState(()=> new Date(sessionStorage.getItem("checkIn")) || new Date.now().toISOString());
+    const [checkOut, setCheckOut] = useState(()=> new Date(sessionStorage.getItem("checkOut")) || new Date().toISOString());
+    const [adultCount, setAdultCount] = useState(()=> sessionStorage.getItem("adultCount") || 1);
+    const [childCount, setChildCount] = useState(()=> sessionStorage.getItem("childCount") || 0);
+    const [hotelId, setHotelId] = useState(()=> sessionStorage.getItem("hotelId") || "");
 
     const saveSearchValues = (destination, checkIn, checkOut, adultCount, childCount)=>{
         setDestination(destination);
@@ -18,6 +18,15 @@ const SearchContextProvider = ({children})=>{
         setChildCount(childCount);
         if(hotelId){
             setHotelId(hotelId);
+        }
+
+        sessionStorage.setItem("destination", destination);
+        sessionStorage.setItem("checkIn", checkIn);
+        sessionStorage.setItem("checkOut", checkOut);
+        sessionStorage.setItem("adultCount", adultCount);
+        sessionStorage.setItem("childCount", childCount);
+        if(hotelId){
+            sessionStorage.setItem("hotelId", hotelId);
         }
     }
 

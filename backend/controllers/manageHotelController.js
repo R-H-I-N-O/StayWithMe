@@ -1,5 +1,6 @@
 const cloudinary = require('cloudinary');
 const Hotels = require('../models/hotelSchema');
+const User = require('../models/userSchema');
 
 const handleAddHotel = async (req, res) => {
     try {
@@ -42,7 +43,7 @@ const handleGetMyHotels = async (req, res) => {
 
 const handleGetHotelById = async (req, res) => {
     try {
-        const hotelId = req.params.id;
+        const hotelId = req.params.id.toString();
 
         const hotel = await Hotels.findOne({
             _id: hotelId,
