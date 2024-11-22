@@ -86,7 +86,7 @@ const SearchBar = () => {
             minDate={minDate}
             maxDate={maxDate}
             placeholderText="Check-in date"
-            className="w-full md:w-[80px] bg-white p-2 focus:outline-none"
+            className="w-full md:w-[120px] bg-white p-2 focus:outline-none"
             wrapperClassName="min-w-full"
           />
         </div>

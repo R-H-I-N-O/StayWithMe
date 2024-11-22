@@ -4,11 +4,11 @@ import { useQuery } from 'react-query'
 import * as apiClient from "../api-client"
 import {loadStripe, Stripe} from "@stripe/stripe-js";
 
-const STRIPE_PUB_KEY = process.env.STRIPE_PUB_KEY || "";
+// const STRIPE_PUB_KEY = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY || "";
 
 const AppContext = createContext();
 
-const stripePromise = loadStripe(STRIPE_PUB_KEY); 
+const stripePromise = loadStripe("pk_test_51PfxMG2KBnZZztGSQkGwgkbRCgtM3064YMjAUHHD7g66arHmEWkZS0EjkHylfE9jVUNjeHq2zkkrFM8rzuY0rWt700JCMUabHJ"); 
 
 const AppContextProvider = ({ children }) => {
 

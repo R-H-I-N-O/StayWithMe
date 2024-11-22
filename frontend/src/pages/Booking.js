@@ -21,13 +21,12 @@ const Booking = ()=>{
         }
     }, [search.checkIn, search.checkOut]);
 
-    const {data: paymentIntentData} = useQuery("createPaymentIntent", ()=> apiClient.createPaymentIntent(hotelId, numberOfNights.toString()),
+    const {data: paymentIntentData} = useQuery("createPaymentIntent", ()=> apiClient.createPaymentIntent(hotelId.hotelId, numberOfNights.toString()),
         {
             enabled: !!hotelId && numberOfNights>0
         }
     );
-    
-    const {data: hotel} = useQuery("fetchHotelById", ()=> apiClient.fetchHotelbyIdForDetails(hotelId),{
+    const {data: hotel} = useQuery("fetchHotelById", ()=> apiClient.fetchHotelbyIdForDetails(hotelId.hotelId),{
         enabled: !!hotelId
     });
 

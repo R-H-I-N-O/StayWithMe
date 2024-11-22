@@ -6,7 +6,6 @@ import GuestInfoForm from "../forms/GuestInfoForm/GuestInfoForm";
 
 const Details = () => {
   const { hotelId } = useParams();
-
   const { data: hotel } = useQuery(
     "fetchHotelById",
     () => apiClient.fetchHotelbyIdForDetails(hotelId || ""),

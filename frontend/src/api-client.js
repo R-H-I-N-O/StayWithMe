@@ -216,8 +216,24 @@ const fetchTrendingHotels = async ()=>{
     return response.json();
 }
 
+const createRoomBooking = async (formData)=>{
+    const response = await fetch(`${API_BASE_URL}/api/hotels/${formData.hotelId}/bookings`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include",
+            body: JSON.stringify(formData),
+        }
+    );
+    if(!response.ok){
+        throw new Error("Error booking room");
+    }
+}
+
 export {
     register, validateToken, signIn, signOut, addMyHotel, fetchMyHotels,
     fetchMyHotelById, UpdateMyHotelById, searchHotels, fetchHotelbyIdForDetails,
-    fetchCurrentUser, createPaymentIntent, fetchTrendingHotels
+    fetchCurrentUser, createPaymentIntent, fetchTrendingHotels, createRoomBooking
 };
