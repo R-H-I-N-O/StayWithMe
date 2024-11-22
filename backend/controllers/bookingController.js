@@ -1,100 +1,122 @@
 const Hotels = require("../models/hotelSchema");
 const User = require("../models/userSchema");
-const Stripe = require('stripe');
+const Stripe = require("stripe");
 
 const stripe = new Stripe(process.env.STRIPE_API_KEY);
 
-const handleFetchUserForBooking = async (req, res)=>{
-    try {
-        const userId = req.userId;
-        const user = await User.findById(userId).select("-password");
-        if(!user){
-            return res.status(400).json({message: "User not found"});
-        }
-        return res.status(200).json(user);
-    } catch (error) {
-        console.error("Error in fetching details", error);
-        return res.status(500).json({ message: "Error in fetching details" });
-    }
-}
+const handleFetchUserForBooking = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const user = await User.findById(userId).select("-password");
 
-const handlePaymentIntentCreation = async (req, res)=>{
-
-    try {
-        const {numberOfNights} = req.body;
-        const hotelId = req.params.hotelId;
-
-        const hotel = await Hotels.findById(hotelId);
-
-        if(!hotel){
-            res.status(400).json({message: "Hotel not found"});
-        }
-
-        const totalCost = hotel.pricePerNight * numberOfNights;
-
-        const paymentIntent = await stripe.paymentIntents.create({
-            amount : totalCost,
-            currency: "inr",
-            metadata: {
-                hotelId,
-                userId: req.userId
-            }
-        });
-
-        if(!paymentIntent.client_secret){
-            res.status(400).json({message: "Erroe in creating payment intent"});
-        }
-
-        const response = {
-            paymentIntentId: paymentIntent.id,
-            clientSecret: paymentIntent.client_secret,
-            totalCost
-        }
-
-        res.status(200).json(response);
-    } catch (error) {
-        console.error("error in creating payment-intent", error);
-        return res.status(500).json({message: "error in creating payment-intent"});
-    }
-}
-
-const handleBookingPayment = async (req,res)=>{
-try {
-    const paymentId = req.body.paymentId;
-    const paymentIntent = await stripe.paymentIntents.retrieve(paymentId);
-
-    if(!paymentIntent){
-        res.status(400).json({message: "payment intent not found"});
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
     }
 
-    if(paymentIntent.metadata.hotelId !== req.params.hotelId || paymentIntent.metadata.userId !== req.userId){
-        res.status(400).json({message: "payment intent mismatch"});
+    return res.status(200).json(user);
+  } catch (error) {
+    console.error("Error in fetching user details:", error);
+    return res.status(500).json({ message: "Error in fetching user details" });
+  }
+};
+
+const handlePaymentIntentCreation = async (req, res) => {
+  try {
+    const { numberOfNights } = req.body;
+    const hotelId = req.params.hotelId;
+
+    // Validate inputs
+    if (!numberOfNights || !hotelId) {
+      return res.status(400).json({ message: "Invalid input data" });
     }
 
-    if(paymentIntent.status !== "succeeded"){
-        res.status(400).json({message: `payment intent not succeeded, status: ${paymentIntent.status}`});
+    const hotel = await Hotels.findById(hotelId);
+
+    if (!hotel) {
+      return res.status(400).json({ message: "Hotel not found" });
+    }
+
+    const totalCost = hotel.pricePerNight * numberOfNights * 100; // Amount in paise for INR
+
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: totalCost,
+      currency: "inr",
+      metadata: {
+        hotelId,
+        userId: req.userId,
+      },
+    });
+
+    if (!paymentIntent.client_secret) {
+      return res.status(400).json({ message: "Error in creating payment intent" });
+    }
+
+    const response = {
+      paymentIntentId: paymentIntent.id,
+      clientSecret: paymentIntent.client_secret,
+      totalCost,
+    };
+
+    res.status(200).json(response);
+  } catch (error) {
+    console.error("Error in creating payment intent:", error);
+    return res.status(500).json({ message: "Error in creating payment intent" });
+  }
+};
+
+const handleBookingPayment = async (req, res) => {
+  try {
+    const { paymentIntentId } = req.body;
+    
+    if (!paymentIntentId) {
+      return res.status(400).json({ message: "Payment ID is required" });
+    }
+
+    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+
+    if (!paymentIntent) {
+      return res.status(400).json({ message: "Payment intent not found" });
+    }
+
+    if (
+      paymentIntent.metadata.hotelId !== req.params.hotelId ||
+      paymentIntent.metadata.userId !== req.userId
+    ) {
+      return res.status(400).json({ message: "Payment intent mismatch" });
+    }
+
+    if (paymentIntent.status !== "succeeded") {
+      return res.status(400).json({
+        message: `Payment intent not succeeded, status: ${paymentIntent.status}`,
+      });
     }
 
     const newBooking = {
-        ...req.body,
-        userId: req.userId
+      ...req.body,
+      userId: req.userId,
     };
 
-    const hotel = await Hotels.findOneAndUpdate({id: req.params.hotelId},{
-        $push: {bookings: newBooking}
-    });
+    const hotel = await Hotels.findByIdAndUpdate(
+      req.params.hotelId,
+      {
+        $push: { bookings: newBooking },
+      },
+      { new: true }
+    );
 
-    if(!hotel){
-        res.status(400).json({message: "Hotel not found"});
+    if (!hotel) {
+      return res.status(400).json({ message: "Hotel not found" });
     }
 
-    await hotel.save();
-
     res.status(200).send();
-} catch (error) {
-    console.error("error in creating booking hotel", error);
-    return res.status(500).json({message: "error in creating booking hotel"});
-}
-}
+  } catch (error) {
+    console.error("Error in booking hotel:", error);
+    return res.status(500).json({ message: "Error in booking hotel" });
+  }
+};
 
-module.exports = {handleFetchUserForBooking, handlePaymentIntentCreation, handleBookingPayment};
+module.exports = {
+  handleFetchUserForBooking,
+  handlePaymentIntentCreation,
+  handleBookingPayment,
+};
