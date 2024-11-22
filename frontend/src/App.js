@@ -9,13 +9,15 @@ import EditHotel from './pages/EditHotel';
 import Search from './pages/Search';
 import Details from './pages/Details';
 import Booking from './pages/Booking';
+import HomeLayout from './layout/HomeLayout'
+import HomePage from './pages/HomePage';
 
 function App() {
   const { isLoggedIn } = useAppContext();
 
   const routes = createRoutesFromElements(
     <>
-      <Route path='/' element={<Layout>HomePage</Layout>}></Route>
+      <Route path='/' element={<HomeLayout><HomePage/></HomeLayout>}></Route>
       <Route path='/registration' element={<Layout><Registration /></Layout>}></Route>
       <Route path='/sign-in' element={<Layout><SignIn /></Layout>}></Route>
       <Route path='/search' element={<Layout><Search /></Layout>}></Route>

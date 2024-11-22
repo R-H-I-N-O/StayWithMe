@@ -206,8 +206,18 @@ const createPaymentIntent = async (hotelId, numberOfNights)=>{
     return response.json();
 }
 
+const fetchTrendingHotels = async ()=>{
+    const response = await fetch(`${API_BASE_URL}/api/hotels/trending`);
+    
+    if (!response.ok) {
+        throw new Error("Error in fetching trending hotels");
+    }
+
+    return response.json();
+}
+
 export {
     register, validateToken, signIn, signOut, addMyHotel, fetchMyHotels,
     fetchMyHotelById, UpdateMyHotelById, searchHotels, fetchHotelbyIdForDetails,
-    fetchCurrentUser, createPaymentIntent
+    fetchCurrentUser, createPaymentIntent, fetchTrendingHotels
 };

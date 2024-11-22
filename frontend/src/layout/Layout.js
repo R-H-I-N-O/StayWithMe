@@ -7,7 +7,7 @@ import SearchBar from "../components/SearchBar";
 const Layout = (props) => {
 
     return (
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col min-h-screen border-box">
             <Header />
             <Hero />
             <div className="container mx-auto">
