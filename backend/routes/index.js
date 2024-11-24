@@ -7,6 +7,7 @@ const handleTrendingFetch = require("../controllers/handleTrendingFetch");
 const { validateUser } = require("../middlewares/auth");
 const { handleBookingPayment } = require("../controllers/bookingController");
 const { param } = require("express-validator");
+const handleMyBookingsController = require("../controllers/handleMyBookingsController");
 
 const router = express.Router();
 
@@ -31,5 +32,8 @@ router.post(
   validateObjectId("hotelId"),
   handleBookingPayment
 );
+
+//For fetching my bookings
+router.get("/api/my-bookings",validateUser , handleMyBookingsController);
 
 module.exports = router;

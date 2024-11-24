@@ -27,13 +27,6 @@ const handleUserRegisteration = async (req, res) => {
             email,
             password: hashedPassword
         });
-        const token = jwt.sign({userId: user._id}, process.env.JWT_SECRET_KEY, {expiresIn: "1h"});
-
-        res.cookie("auth_token", token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            maxAge: 10 * 60 * 60 * 10
-        });
         return res.status(200).json({ message: "User created successfully" });
     } catch (error) {
         console.error(error);

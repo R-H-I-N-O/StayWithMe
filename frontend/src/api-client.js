@@ -232,8 +232,19 @@ const createRoomBooking = async (formData)=>{
     }
 }
 
+const fetchMyBookings = async () => {
+    const response = await fetch(`${API_BASE_URL}/api/my-bookings`,{
+        credentials: "include"
+    });
+    if(!response.ok){
+        throw new Error("unable to fetch bookings");
+    }
+    return response.json();
+}
+
 export {
     register, validateToken, signIn, signOut, addMyHotel, fetchMyHotels,
     fetchMyHotelById, UpdateMyHotelById, searchHotels, fetchHotelbyIdForDetails,
-    fetchCurrentUser, createPaymentIntent, fetchTrendingHotels, createRoomBooking
+    fetchCurrentUser, createPaymentIntent, fetchTrendingHotels, createRoomBooking,
+    fetchMyBookings
 };

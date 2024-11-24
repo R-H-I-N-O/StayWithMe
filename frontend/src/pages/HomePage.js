@@ -3,8 +3,10 @@ import HomeCarousel from "../components/HomeCarousel";
 const HomePage = () => {
   return (
     <>
+    <h1 className="text-3xl font-bold mt-4">Latest Hotels</h1>
       <HomeCarousel />
-      <div className="flex gap-4 mt-8 flex-col md:flex-row">
+      <h2 className="text-3xl font-bold mt-8">Frequently Asked Questions!</h2>
+      <div className="flex gap-4 mt-4 flex-col md:flex-row">
         <p>
           <p className="font-bold py-2 text-[18px] text-[18px]">Tips for Booking a Hotel </p>
           No holiday is complete without the right hotel. If you're looking to
@@ -14,7 +16,7 @@ const HomePage = () => {
           or just taking some time away for yourself.
           <p className="font-bold py-2 text-[18px] mt-4">How to book a hotel? </p>
           When you're looking to book a hotel, we've got you covered. With
-          Expedia, all you have to do is input your travel dates and your
+          StayWithMe, all you have to do is input your travel dates and your
           destination, and we'll show you some of the best hotels available. You
           can add additional search filters to sort your results even further
           whether you're looking for a cheap hotel room or you want to splurge
@@ -59,18 +61,18 @@ const HomePage = () => {
             {" "}
             How can I find some of the best deals on hotels?
           </p>
-          Hotel deals are easy to find when you use Expedia. All you have to do
+          Hotel deals are easy to find when you use StayWithMe. All you have to do
           is implement the necessary search filters when trying to find a hotel
           for your next holiday. Filters are available for features like being
-          fully refundable and having free cancellation. If you're an Expedia
+          fully refundable and having free cancellation. If you're an StayWithMe
           member, you can often find additional discounts that you wouldn't be
           able to enjoy otherwise. Of course, always remember to sort by price
           to see the cheapest suitable options that meet your criteria first on
           the results page.
           <p className="font-bold py-2 text-[18px]">
-            Why should I book a hotel with Expedia?{" "}
+            Why should I book a hotel with StayWithMe?{" "}
           </p>
-          Booking with Expedia makes planning a holiday easy. Not only will you
+          Booking with StayWithMe makes planning a holiday easy. Not only will you
           be able to search a massive array of hotels with tools that make it
           easy to narrow down your options, but you can book a flight as well.
           You may even find additional discounts by booking your hotel and
@@ -79,9 +81,9 @@ const HomePage = () => {
           member is completely free, so there's no barrier to entry that comes
           with it.
           <p className="font-bold py-2 text-[18px]">
-            Are hotels fully refundable on Expedia?{" "}
+            Are hotels fully refundable on StayWithMe?{" "}
           </p>
-          Some hotels on Expedia do offer flexible cancellation policies. You'll
+          Some hotels on StayWithMe do offer flexible cancellation policies. You'll
           be able to see which ones do on your search results page because
           they'll be labelled as such in green text. Of course, you can always
           implement the 'fully refundable' search filter to only show results

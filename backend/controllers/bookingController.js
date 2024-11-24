@@ -36,7 +36,7 @@ const handlePaymentIntentCreation = async (req, res) => {
       return res.status(400).json({ message: "Hotel not found" });
     }
 
-    const totalCost = hotel.pricePerNight * numberOfNights * 100; // Amount in paise for INR
+    const totalCost = hotel.pricePerNight * numberOfNights; // Amount in paise for INR
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount: totalCost,
